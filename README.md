@@ -9,11 +9,13 @@ Este projeto é um sistema simples para gerenciamento de usuários e eventos, de
 ### Usuários
 - Adicionar usuário (com suas informações)
 - Remover usuário
+- Editar usuários
 - Buscar usuário por nome ou ID
 
 ### Eventos
 - Adicionar evento (com suas informações)
 - Remover evento
+- Editar eventos
 - Buscar evento por ID, nome, categoria ou cidade
 
 ### Participação
