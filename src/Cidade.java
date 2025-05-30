@@ -1,0 +1,10 @@
+public enum Cidade {
+    BRASILIA,
+    BELO_HORIZONTE,
+    FEIRA_DE_SANTANA,
+    FLORIANOPOLIS,
+    RIO_DE_JANEIRO,
+    SALVADOR,
+    SAO_PAULO,
+    NULO
+}
