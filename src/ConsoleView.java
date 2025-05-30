@@ -53,18 +53,20 @@ public class ConsoleView {
         System.out.println("================================================\n");
         System.out.println("        [1] - Adicionar Usuário");
         System.out.println("        [2] - Remover Usuário");
-        System.out.println("        [3] - Buscar Usuário");
+        System.out.println("        [3] - Editar Usuário");
+        System.out.println("        [4] - Buscar Usuário");
         System.out.println("        [0] - Voltar \n");
         System.out.println("            Digite a opção desejada!\n");
         System.out.println("================================================\n");
 
-        int opcao = AppController.verificarOpcao(3);
+        int opcao = AppController.verificarOpcao(4);
 
         switch (opcao) {
             case 0: AppController.selecionarMenu(0); break;
             case 1: AppController.selecionarMenu(11); break;
             case 2: AppController.selecionarMenu(12); break;
-            case 3: AppController.selecionarMenu(13); break;
+            case 3: AppController.selecionarMenu(14); break;
+            case 4: AppController.selecionarMenu(13); break;
         }
     }
 
@@ -142,11 +144,124 @@ public class ConsoleView {
         AppController.selecionarMenu(1);
     }
 
+    // MENU EDITAR USUÁRIO -------------
+    public static void editarUsuario() {
+        System.out.println("================================================\n");
+        System.out.println("        [1] - Buscar por ID");
+        System.out.println("        [2] - Buscar por nome");
+        System.out.println("        [0] - Voltar \n");
+        System.out.println("            Digite a opção desejada!\n");
+        System.out.println("================================================\n");
+
+        int opcao = AppController.verificarOpcao(2);
+        ConsoleView.limparTela();
+
+        String id = "-Default";
+        String nome = "-Default";
+
+        switch (opcao){
+            case 0: AppController.selecionarMenu(1); break;
+            case 1: System.out.print("ID: "); id = scanner.nextLine(); break;
+            case 2: System.out.print("Nome: "); nome = scanner.nextLine(); break;
+        }
+
+
+        if (opcao != 0){
+            ConsoleView.limparTela();
+            List<Usuario> listaUsuarios = AppController.buscarUsuario(opcao, id, nome);
+            System.out.println("=========================================================\n");
+            System.out.println("                   Usuários Encontrados");
+            System.out.println("         [ID] - Nome | Cidade | Gênero | idade\n");
+            AppController.listarUsuarios(listaUsuarios);
+            System.out.println("\n=========================================================\n");
+            System.out.println("        Digite o número de ID para editar o usuário!\n");
+            System.out.println("        [0] - Para cancelar");
+            System.out.println("\n=========================================================\n");
+
+            if (Usuario.numUsuarios != 0)
+                opcao = AppController.verificarOpcao(Usuario.numUsuarios);
+            else
+                mensagem("Não há usuários para editar!", 1);
+
+        }
+
+        Usuario usuario = SistemaEventos.usuarios.get(opcao - 1);
+        // Definindo nome
+        System.out.print("Nome do Usuário: ");
+        nome = scanner.nextLine();
+        ConsoleView.limparTela();
+
+        // Definindo Cidade
+        System.out.println("================================================\n");
+        System.out.println("        Escolha a cidade do usuário:\n");
+        System.out.println("        [0] - Brasília");
+        System.out.println("        [1] - Belo Horizonte");
+        System.out.println("        [2] - Feira de Santana");
+        System.out.println("        [3] - Florianópolis");
+        System.out.println("        [4] - Rio de Janeiro");
+        System.out.println("        [5] - Salvador");
+        System.out.println("        [6] - São Paulo\n");
+        System.out.println("================================================\n");
+
+        opcao = AppController.verificarOpcao(6);
+
+        Cidade cidade = Cidade.BRASILIA; // como default para poder callar metodo de SistemaEventos
+        cidade = switch (opcao) {
+            case 0 -> Cidade.BRASILIA;
+            case 1 -> Cidade.BELO_HORIZONTE;
+            case 2 -> Cidade.FEIRA_DE_SANTANA;
+            case 3 -> Cidade.FLORIANOPOLIS;
+            case 4 -> Cidade.RIO_DE_JANEIRO;
+            case 5 -> Cidade.SALVADOR;
+            case 6 -> Cidade.SAO_PAULO;
+            default -> cidade;
+        };
+        ConsoleView.limparTela();
+
+        // Definindo gênero
+        System.out.println("================================================\n");
+        System.out.println("        Gênero do usuário\n");
+        System.out.println("        [0] - Masculino");
+        System.out.println("        [1] - Feminino");
+        System.out.println("        [2] - Outro\n");
+        System.out.println("================================================\n");
+
+        opcao = AppController.verificarOpcao(2);
+        char genero = switch (opcao) {
+            case 0 -> 'M';
+            case 1 -> 'F';
+            case 2 -> 'O';
+            default -> 'D'; // como default para poder callar metodo de SistemaEventos
+        };
+        ConsoleView.limparTela();
+
+        // Definindo idade
+        int idade = -1; // como default para poder callar metodo de SistemaEventos
+        boolean valida;
+
+        do {
+            System.out.print("Idade do usuário: ");
+            try {
+                idade = scanner.nextInt();
+                scanner.nextLine(); // para limpar o buffer
+                valida = true;
+            } catch (Exception e) {
+                scanner.nextLine(); // para limpar o buffer
+                valida = false;
+                System.out.println("[ERRO] Não foi possível ler a opção digitada! Tente novamente!");
+            }
+        } while (!valida || !(idade > 0));
+        ConsoleView.limparTela();
+
+        SistemaEventos.editarUsuario(usuario, nome, cidade, genero, idade);
+        AppController.selecionarMenu(1);
+    }
+
     // REMOVER USUÁRIO -------------
     public static void removerUsuario() {
         System.out.println("================================================\n");
-        System.out.println("        [1] - Remover por ID");
-        System.out.println("        [2] - Remover por nome");
+        System.out.println("        [1] - Buscar por ID");
+        System.out.println("        [2] - Buscar por nome");
         System.out.println("        [0] - Voltar \n");
         System.out.println("            Digite a opção desejada!\n");
         System.out.println("================================================\n");
@@ -179,13 +294,11 @@ public class ConsoleView {
             if (Usuario.numUsuarios != 0)
                 opcao = AppController.verificarOpcao(Usuario.numUsuarios);
             else
-                mensagem("Não há usuários para remover!", 12);
+                mensagem("Não há usuários para remover!", 11);
 
-            if (opcao == 0) AppController.selecionarMenu(12);
-            else{
-                SistemaEventos.removerUsuario(opcao - 1);
-                AppController.selecionarMenu(12);
-            }
+            if (opcao != 0) SistemaEventos.removerUsuario(opcao - 1);
+            AppController.selecionarMenu(1);
+
         }
     }
 
@@ -263,18 +376,20 @@ public class ConsoleView {
         System.out.println("================================================\n");
         System.out.println("        [1] - Adicionar Evento");
         System.out.println("        [2] - Remover Evento");
-        System.out.println("        [3] - Buscar Evento");
+        System.out.println("        [3] - Editar Evento");
+        System.out.println("        [4] - Buscar Evento");
         System.out.println("        [0] - Voltar \n");
         System.out.println("            Digite a opção desejada!\n");
         System.out.println("================================================\n");
 
-        int opcao = AppController.verificarOpcao(3);
+        int opcao = AppController.verificarOpcao(4);
 
         switch (opcao) {
             case 0: AppController.selecionarMenu(0); break;
             case 1: AppController.selecionarMenu(21); break;
             case 2: AppController.selecionarMenu(22); break;
-            case 3: AppController.selecionarMenu(23); break;
+            case 3: AppController.selecionarMenu(24); break;
+            case 4: AppController.selecionarMenu(23); break;
         }
     }
 
@@ -356,6 +471,136 @@ public class ConsoleView {
         AppController.selecionarMenu(2);
     }
 
+    public static void editarEvento() {
+
+        System.out.println("================================================\n");
+        System.out.println("        [1] - Buscar por ID");
+        System.out.println("        [2] - Buscar por nome");
+        System.out.println("        [0] - Voltar \n");
+        System.out.println("            Digite a opção desejada!\n");
+        System.out.println("================================================\n");
+
+        int opcao = AppController.verificarOpcao(2);
+        ConsoleView.limparTela();
+
+        String id = "-Default";
+        String nome = "-Default";
+        Cidade cidade = Cidade.NULO;
+        CategoriaEvento categoria = CategoriaEvento.NULO;
+
+        switch (opcao) {
+            case 0:
+                AppController.selecionarMenu(2);
+                break;
+            case 1:
+                System.out.print("ID: ");
+                id = scanner.nextLine();
+                break;
+            case 2:
+                System.out.print("Nome: ");
+                nome = scanner.nextLine();
+                break;
+        }
+
+
+        if (opcao != 0) {
+            ConsoleView.limparTela();
+            List<Evento> listaEventos = AppController.buscarEvento(opcao, id, nome, cidade, categoria);
+            System.out.println("=========================================================\n");
+            System.out.println("                   Eventos Encontrados");
+            System.out.println("      [ID] - Nome | Cidade | Categoria | Data e Hora \n");
+            AppController.listarEventos(listaEventos);
+            System.out.println("\n=========================================================\n");
+            System.out.println("        Digite o número de ID para editar o evento!\n");
+            System.out.println("        [0] - Para cancelar");
+            System.out.println("\n=========================================================\n");
+
+            if (Evento.numEventos != 0)
+                opcao = AppController.verificarOpcao(Evento.numEventos);
+            else
+                mensagem("Não há eventos para editar!", 2);
+        }
+
+        if (opcao == 0) AppController.selecionarMenu(2);
+        else {
+
+            Evento evento = SistemaEventos.eventos.get(opcao - 1);
+            // Definindo nome
+            System.out.print("Nome do Evento: ");
+            nome = scanner.nextLine();
+            ConsoleView.limparTela();
+
+            // Definindo Cidade
+            System.out.println("================================================\n");
+            System.out.println("        Escolha a cidade do evento:\n");
+            System.out.println("        [0] - Brasília");
+            System.out.println("        [1] - Belo Horizonte");
+            System.out.println("        [2] - Feira de Santana");
+            System.out.println("        [3] - Florianópolis");
+            System.out.println("        [4] - Rio de Janeiro");
+            System.out.println("        [5] - Salvador");
+            System.out.println("        [6] - São Paulo\n");
+            System.out.println("================================================\n");
+
+            opcao = AppController.verificarOpcao(6);
+
+            cidade = Cidade.BRASILIA; // como default para poder callar metodo de SistemaEventos
+            cidade = switch (opcao) {
+                case 0 -> Cidade.BRASILIA;
+                case 1 -> Cidade.BELO_HORIZONTE;
+                case 2 -> Cidade.FEIRA_DE_SANTANA;
+                case 3 -> Cidade.FLORIANOPOLIS;
+                case 4 -> Cidade.RIO_DE_JANEIRO;
+                case 5 -> Cidade.SALVADOR;
+                case 6 -> Cidade.SAO_PAULO;
+                default -> cidade;
+            };
+            ConsoleView.limparTela();
+
+            // Definindo endereço
+            System.out.print("Endereço: ");
+            String endereco = scanner.nextLine();
+            ConsoleView.limparTela();
+
+            // Definindo Categoria
+            System.out.println("================================================\n");
+            System.out.println("        Escolha a categoria do evento:\n");
+            System.out.println("        [0] - Cultural");
+            System.out.println("        [1] - Educacional");
+            System.out.println("        [2] - Esportivo");
+            System.out.println("        [3] - Show");
+            System.out.println("        [4] - Tecnologia");
+            System.out.println("        [5] - Outro\n");
+            System.out.println("================================================\n");
+
+            opcao = AppController.verificarOpcao(5);
+
+            categoria = CategoriaEvento.CULTURAL; // como default para poder callar metodo de SistemaEventos
+            categoria = switch (opcao) {
+                case 0 -> CategoriaEvento.CULTURAL;
+                case 1 -> CategoriaEvento.EDUCACIONAL;
+                case 2 -> CategoriaEvento.ESPORTIVO;
+                case 3 -> CategoriaEvento.SHOW;
+                case 4 -> CategoriaEvento.TECNOLOGIA;
+                case 5 -> CategoriaEvento.OUTRO;
+                default -> categoria;
+            };
+            ConsoleView.limparTela();
+
+            // Definindo Horário
+            LocalDateTime dataHora = AppController.pedirDateTime();
+            ConsoleView.limparTela();
+
+            // Definindo endereço
+            System.out.print("Descrição do evento: ");
+            String descricao = scanner.nextLine();
+            ConsoleView.limparTela();
+
+            SistemaEventos.editarEvento(evento, nome, cidade, endereco, categoria, dataHora, descricao);
+            AppController.selecionarMenu(2);
+        }
+    }
+
     // REMOVER EVENTO -------------
     public static void removerEvento() {
         System.out.println("================================================\n");
@@ -403,6 +648,8 @@ public class ConsoleView {
                 AppController.selecionarMenu(22);
             }
         }
+
+
     }
 
     // BUSCAR EVENTO -------------

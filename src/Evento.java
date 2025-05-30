@@ -7,12 +7,12 @@ public class Evento {
     public static int numEventos;
 
     public String id;
-    final String nome;
-    final Cidade cidade;
-    final String endereco;
-    final CategoriaEvento categoria;
-    final LocalDateTime dataHora;
-    final String descricao;
+    public String nome;
+    public Cidade cidade;
+    public String endereco;
+    public CategoriaEvento categoria;
+    public LocalDateTime dataHora;
+    public String descricao;
     public List<Usuario> participantes = new ArrayList<>();
     public int[] loadingParticipantes;
 

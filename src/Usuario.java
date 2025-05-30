@@ -5,10 +5,10 @@ public class Usuario {
     public static int numUsuarios;
 
     public String id;
-    final String nome;
-    final Cidade cidade;
-    final char genero;
-    final int idade;
+    public String nome;
+    public Cidade cidade;
+    public char genero;
+    public int idade;
     public List<Evento> eventosInscritos = new ArrayList<>();
 
     public Usuario(String nome, Cidade cidade, char genero, int idade){

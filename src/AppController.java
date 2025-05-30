@@ -37,33 +37,17 @@ public class AppController {
         ConsoleView.limparTela();
 
         switch (menuID) {
-            case 0:
-                ConsoleView.menuPrincipal();
-                break;
-            case 1:
-                ConsoleView.menuUsuario();
-                break;
-            case 11:
-                ConsoleView.adicionarUsuario();
-                break;
-            case 12:
-                ConsoleView.removerUsuario();
-                break;
-            case 13:
-                ConsoleView.buscarUsuario();
-                break;
-            case 2:
-                ConsoleView.menuEventos();
-                break;
-            case 21:
-                ConsoleView.adicionarEvento();
-                break;
-            case 22:
-                ConsoleView.removerEvento();
-                break;
-            case 23:
-                ConsoleView.buscarEvento();
-                break;
+            case 0: ConsoleView.menuPrincipal(); break;
+            case 1: ConsoleView.menuUsuario(); break;
+            case 11: ConsoleView.adicionarUsuario(); break;
+            case 12: ConsoleView.removerUsuario(); break;
+            case 13: ConsoleView.buscarUsuario(); break;
+            case 14: ConsoleView.editarUsuario(); break;
+            case 2: ConsoleView.menuEventos(); break;
+            case 21: ConsoleView.adicionarEvento(); break;
+            case 22: ConsoleView.removerEvento(); break;
+            case 23: ConsoleView.buscarEvento(); break;
+            case 24: ConsoleView.editarEvento(); break;
             case 99:
                 GerenciadorDados.salvarDados(SistemaEventos.usuarios, SistemaEventos.eventos);
                 ConsoleView.finalizarPrograma();
