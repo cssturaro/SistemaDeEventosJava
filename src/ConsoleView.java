@@ -35,7 +35,7 @@ public class ConsoleView {
         System.out.println("================================================\n");
         System.out.println("        [1] - Menu de Usuário");
         System.out.println("        [2] - Menu de Eventos");
-        System.out.println("        [0] - Sair \n");
+        System.out.println("        [0] - Salvar e Sair \n");
         System.out.println("            Digite a opção desejada!\n");
         System.out.println("================================================\n");
 
