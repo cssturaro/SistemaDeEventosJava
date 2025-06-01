@@ -32,6 +32,24 @@ Este projeto é um sistema simples para gerenciamento de usuários e eventos, de
 
 ---
 
+## Arquitetura MVC (Model, View, Controller)
+
+### Model: 
+- Evento.java (classe de eventos)
+- Usuario.java (classe de usuários)
+- CategoriaEvento.java (enum)
+- Cidade.java (enum)
+- SistemaEventos.java (gerenciador de eventos e usuarios)
+- GerenciadorDados.java (gerenciador de dados)
+
+### View:
+- ConsoleView.java (telas)
+
+### Controller:
+- AppController.java (comunicação entre view e model)
+  
+---
+
 ## Como usar
 
 1. Clone este repositório
